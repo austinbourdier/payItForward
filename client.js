@@ -6,8 +6,11 @@ if (navigator.geolocation) {
 
 function success(position){
   console.log(position)
+  alert(position)
 }
 
 function failure(){
   console.log('Geolocation not found');
+  alert('failed')
+
 }
