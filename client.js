@@ -8,8 +8,10 @@ function success(position){
   $.ajax({
     url: '/locations',
     type: 'GET',
-    dataType: 'jsonp'
-  }).done(function(data){
+    dataType: 'json'
+  }).success(function(data){
+    console.log('hi')
+    alert('hi')
       console.log(data)
     })
 }
