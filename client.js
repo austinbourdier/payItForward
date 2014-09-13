@@ -1,8 +1,5 @@
 if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(showPosition())
+  navigator.geolocation.getCurrentPosition(function(position){console.log(position)})
 } else {
   alert('error')
-}
-function showPosition(position) {
-   console.log(position)
 }
