@@ -9,7 +9,7 @@ function success(position){
     url: '/locations',
     type: 'GET',
     dataType: 'json'
-  }).success(function(data){
+  }).done(function(data){
     console.log('hi')
     alert('hi')
       console.log(data)
