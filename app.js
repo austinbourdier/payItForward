@@ -9,6 +9,7 @@ console.log("Node server started on port 5000");
 
 app.use('/', express.static(__dirname + '/'));
 app.get('/', function(req,res) {
+  console.log(req)
   res.sendfile(__dirname + '/index.html');
   search = req.query || "";
 });

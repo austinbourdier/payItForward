@@ -5,10 +5,17 @@ if (navigator.geolocation) {
 }
 
 function success(position){
-  console.log(position)
-  alert('success')
+  $.ajax({
+    url: '/',
+    type: 'POST',
+    data: position
+  }).done({
+    function(){
+      console.log('location sent to server')
+    }
+  })
 }
 
 function failure(){
-  alert('failure')
+  alert('Could not find your current location')
 }
