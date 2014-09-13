@@ -12,12 +12,11 @@ app.use(bodyParser.urlencoded()); // to support URL-encoded bodies
 
 app.use('/', express.static(__dirname + '/'));
 app.get('/', function(req,res) {
-  console.log('hello')
   res.sendfile(__dirname + '/index.html');
   search = req.query || "";
 });
 
-app.post('/', function(req, res){
+app.post('/index', function(req, res){
   console.log('here')
 
   console.log(req)
