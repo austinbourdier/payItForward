@@ -20,6 +20,7 @@ app.get('/locations', function(req, res){
   console.log('here')
 
   console.log(req)
+  res.send('hi')
 })
 
 factual.get('/t/places-us', {geo:{"$circle":{"$center":[34.058583, -118.416582],"$meters":1000}}}, function (error, res) {
