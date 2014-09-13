@@ -16,7 +16,7 @@ app.get('/', function(req,res) {
   search = req.query || "";
 });
 
-app.get('/location', function(req, res){
+app.get('/locations', function(req, res){
   console.log('here')
 
   console.log(req)
