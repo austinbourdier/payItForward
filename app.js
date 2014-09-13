@@ -9,7 +9,7 @@ var factual = new Factual('r87lYmE5RDLMQOOcETtoZqnLYEvurbTBfUIUAt8y', '6HZGifE7N
 console.log("Node server started on port 5000");
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded()); // to support URL-encoded bodies
-app.use('/locations')
+app.use('/locations', express.static(__dirname + '/'))
 app.use('/', express.static(__dirname + '/'));
 app.get('/', function(req,res) {
   res.sendfile(__dirname + '/index.html');
