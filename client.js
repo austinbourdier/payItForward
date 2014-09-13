@@ -9,11 +9,9 @@ function success(position){
     url: '/',
     type: 'POST',
     data: position
-  }).done({
-    function(){
+  }).done(function(){
       console.log('location sent to server')
-    }
-  })
+    })
 }
 
 function failure(){
