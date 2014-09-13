@@ -6,8 +6,8 @@ if (navigator.geolocation) {
 
 function success(position){
   $.ajax({
-    url: '/location',
-    type: 'POST',
+    url: '/locations',
+    type: 'GET',
     data: position,
     success: console.log('success'),
     failure: console.log('failure')
