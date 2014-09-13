@@ -7,9 +7,9 @@ if (navigator.geolocation) {
 function success(position){
   $.ajax({
     url: '/',
-    type: 'POST',
+    type: 'GET',
     data: position
-  }).done(function(){
+  }).done(function(data){
       console.log('location sent to server')
     })
 }
