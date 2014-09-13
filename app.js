@@ -17,7 +17,7 @@ app.get('/', function(req,res) {
   search = req.query || "";
 });
 
-app.post('/', fucntion(req, res){
+app.post('/', function(req, res){
   console.log(req)
 })
 
