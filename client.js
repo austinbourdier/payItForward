@@ -13,7 +13,7 @@ app.controller('mainCtrl', function($scope, $http) {
       type: 'GET',
       dataType: 'json'
     }).success(function(data) {
-      console.log(data)
+      $('#main').text(data);
     })
   }
   function failure(){
