@@ -8,10 +8,10 @@ function success(position){
   $.ajax({
     url: '/',
     type: 'POST',
-    data: position
-  }).done(function(data){
-      console.log('location sent to server')
-    })
+    data: position,
+    success: console.log('success'),
+    failure: console.log('failure')
+  })
 }
 
 function failure(){
