@@ -18,6 +18,8 @@ app.get('/', function(req,res) {
 });
 
 app.post('/', function(req, res){
+  console.log('here')
+
   console.log(req)
 })
 

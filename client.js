@@ -5,7 +5,6 @@ if (navigator.geolocation) {
 }
 
 function success(position){
-  console.log('here')
   $.ajax({
     url: '/',
     type: 'POST',
