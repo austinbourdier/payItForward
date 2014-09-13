@@ -1,22 +1,23 @@
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(success, failure)
-} else {
-  alert('error')
-}
+var app = angular.module('payItForward', []).run(function($rootScope){
 
-function success(position){
-  console.log('run it')
-  $.ajax({
-    url: '/locations',
-    type: 'GET',
-    dataType: 'json'
-  }).done(function(data){
-    console.log('hi')
-    alert('hi')
+})
+app.controller('mainCtrl', function($scope, $http) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(success, failure)
+  } else {
+    alert('error')
+  }
+  function success(position){
+    $http({
+      url: '/locations/' + position.coords.latitude + '&' + position.coords.longitude,
+      type: 'GET',
+      dataType: 'json'
+    }).success(function(data) {
       console.log(data)
     })
-}
+  }
+  function failure(){
+    console.log('failed')
+  }
+});
 
-function failure(){
-  alert('Could not find your current location')
-}
