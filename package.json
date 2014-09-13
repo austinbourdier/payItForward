@@ -1,0 +1,13 @@
+{
+  "name": "eventSearch",
+  "version": "0.0.1",
+  "private": "true",
+  "dependencies": {
+    "express": "*",
+    "node-env-file": "*",
+    "geolib": "*",
+    "navigator": "*",
+    "factual-api": "*",
+    "underscore-node": "*"
+  }
+}
