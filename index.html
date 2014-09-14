@@ -8,7 +8,12 @@
   <link rel="stylesheet" href="web.css">
 </head>
 <body>
-  <div id = 'main' ng-controller="mainCtrl"></div>
+  <div id = 'main' ng-controller='mainCtrl'>
+    <ol>
+      <li class = 'profile' ng-repeat='location in locations track by $index'><span class = 'name'>{{location.name}}</span><span ng-if='location.website'> – <a ng-href = '{{location.website}}'>Restaurant Website</a></span></li>
+    </ol>
+  </div>
+  <div ng-controller='profileCtrl'></div>
 </body>
 </html>
 

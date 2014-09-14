@@ -17,9 +17,13 @@ app.get('/', function(req,res) {
 app.get('/locations/:coords', function(req,res) {
   var coordsString = req.params.coords;
   factual.get('/t/places-us', {limit:50, filters:{category_ids:{"$includes_any":[312,347]}}, sort: "$distance", geo:{"$circle":{"$center":[coordsString.substring(0,coordsString.indexOf('&')), coordsString.substring(coordsString.indexOf('&')+1)],"$meters":20000}}}, function (error, response) {
-    res.send(response.data)
+    res.send(response.data);
   });
 });
+
+app.get('/profile/:name', function(req,res){
+  console.log(req.params.name)
+})
 
 
 server.listen(process.env.PORT || 5000)
