@@ -26,6 +26,7 @@ app.controller('mainCtrl', function($scope, $http) {
 
 app.controller('profileCtrl', function($scope, $http){
   $scope.currentProfile = [];
+  $scope.coupons = [];
   $(document).on('click', '.profile .name', function(){
     $http({
       url: '/profile/' + (this).innerHTML,
@@ -33,13 +34,14 @@ app.controller('profileCtrl', function($scope, $http){
       dataType: 'json'
     }).success(function(data) {
       $scope.currentProfile = {
-        name: data.name,
-        address: data.address,
-        hours: data.hours,
-        phone: data.phone,
-        website: data.website,
-        currentCoupon: data.currentCoupon
+        name: data.location.name,
+        address: data.location.address,
+        hours: data.location.hours,
+        phone: data.location.phone,
+        website: data.location.website,
+        currentCoupon: data.location.currentCoupon
       }
+      data.coupons.forEach(function(coupon){$scope.coupons.push(coupon)});
       console.log(data)
     })
   })

@@ -14,14 +14,21 @@
     </ol>
   </div>
   <div id = 'profile' ng-controller='profileCtrl'>
-    <span ng-if='currentProfile'>
-    <p>{{currentProfile.name}}</p>
-    <p>{{currentProfile.address}}</p>
-    <p>{{currentProfile.hours}}</p>
-    <p>{{currentProfile.phone}}</p>
-    <p>{{currentProfile.website}}</p>
-    <p>{{currentProfile.currentCoupon[0]}}</p>
-    </span>
+    <div ng-if='currentProfile'>
+      <p>{{currentProfile.name}}</p>
+      <p>{{currentProfile.address}}</p>
+      <p>{{currentProfile.hours}}</p>
+      <p>{{currentProfile.phone}}</p>
+      <p>{{currentProfile.website}}</p>
+      <p>{{currentProfile.currentCoupon[0]}}</p>
+    </div>
+    <div ng-if='currentProfile'>
+      <ol>
+        <li ng-repeat='coupon in coupons track by $index'>
+          {{coupon}}
+        </li>
+      </ol>
+    </div>
   </div>
 </body>
 </html>

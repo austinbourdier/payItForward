@@ -11,14 +11,31 @@ var User = require('./models/models').models.user;
 var Coupon = require('./models/models').models.coupon;
 var Location = require('./models/models').models.location;
 app.use('/', express.static(__dirname + '/'));
+
+db.on('open', function(){
+  Coupon.remove({}, function(){console.log('deleted')});
+  var discounts = ['20%', '10%', '50%', '45%', '$10', '$15', 'Half', 'Buy one get one half'];
+  var item = [' any well drink', ' any appetizer', ' any entree', ' any dessert', ' dinner for four', ' any pitcher of beer'];
+  var append = [' while supplies last', ' greater than $25', ' every third friday of the month', ' all summer', ' after 6pm on weekdays', ' for adults 21+'];
+  for(var couponIndex = 0; couponIndex < 50; couponIndex++){
+    var newCoupon = new Coupon({
+      description: discounts[Math.floor(Math.random()*discounts.length)] + item[Math.floor(Math.random()*item.length)] + append[Math.floor(Math.random()*append.length)],
+      user: [],
+      location: []
+    })
+    newCoupon.save();
+  }
+})
+
 app.get('/', function(req,res) {
   res.sendfile(__dirname + '/index.html');
   search = req.query || "";
 });
 
 app.get('/locations/:coords', function(req,res) {
+
   var coordsString = req.params.coords;
-  factual.get('/t/places-us', {limit:50, filters:{category_ids:{"$includes_any":[312,347]}}, sort: "$distance", geo:{"$circle":{"$center":[coordsString.substring(0,coordsString.indexOf('&')), coordsString.substring(coordsString.indexOf('&')+1)],"$meters":20000}}}, function (error, response) {
+  factual.get('/t/places-us', {limit:25, filters:{category_ids:{"$includes_any":[312,347]}}, sort: "$distance", geo:{"$circle":{"$center":[coordsString.substring(0,coordsString.indexOf('&')), coordsString.substring(coordsString.indexOf('&')+1)],"$meters":20000}}}, function (error, response) {
     res.send(response.data);
   });
 });
@@ -37,10 +54,14 @@ app.get('/profile/:name', function(req,res){
           currentCoupon: []
         })
         newLocation.save();
-        res.send({location: newLocation, coupons: coupons});
+        Coupon.find({location:{$size:0}, user:{$size:0}}, function(err, coupons){
+          res.send({location: newLocation, coupons: coupons});
+        })
       })
     } else {
-      res.send({location: location, coupons: coupons});
+      Coupon.find({location:{$size:0}}, function(err, coupons){
+        res.send({location: location, coupons: coupons});
+      })
     }
   });
 })
@@ -55,15 +76,4 @@ mongoose.connect("mongodb://localhost:27017/db", function(err, db) {
 
 server.listen(process.env.PORT || 5000)
 
-db.on('open', function(){
-  var discounts = ['20%', '10%', '50%', '45%', '$10', '$15', 'Half', 'Buy one get one half'];
-  var item = [' any well drink', ' any appetizer', ' any entree', ' any dessert', ' dinner for four', ' any pitcher of beer'];
-  var append = [' while supplies last', ' greater than $25', ' every third friday of the month', ' all summer', ' after 6pm on weekdays', ' for adults 21+'];
-  for(var couponIndex = 0; couponIndex < 50; couponIndex++){
-    var newCoupon = new Coupon({
-      description: discounts[Math.floor(Math.random()*discounts.length)] + item[Math.floor(Math.random()*item.length)] + append[Math.floor(Math.random()*append.length)],
-      user: [],
-      location: []
-    })
-  }
-})
+
