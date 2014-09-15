@@ -79,8 +79,8 @@ app.get('/:location/coupon/:id', function(req, res){
   Coupon.findOneAndUpdate({id:req.params.id}, {location:[req.params.location]}, function(err, coupon){
     Location.find({name: req.params.location} , function(err, place){
       Coupon.find({location:{$size:0}, user:{$size:0}}, function(err, coupons){
-         console.log(place)
-         res.send({location: req.params.location, coupons: coupons, receivedCoupon: place.currentCoupon});
+        console.log(place)
+         res.send({location: req.params.location, coupons: coupons, receivedCoupon: place[0].currentCoupon});
       })
     })
     Coupon.findOne({id:req.params.id}, 'description', function(err,coupon){

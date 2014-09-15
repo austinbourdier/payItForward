@@ -49,6 +49,7 @@ app.controller('profileCtrl', function($scope, $http){
     }).success(function(data){
       $scope.coupons = [];
       console.log(data)
+      if(data.receivedCoupon.length>0){alert('You have received: ' + data.receivedCoupon)}else{alert('You are the first to leave a coupon at this location, thanks!')}
       data.coupons.forEach(function(coupon){$scope.coupons.push(coupon)});
     })
   })
