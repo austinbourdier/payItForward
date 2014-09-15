@@ -1,9 +1,32 @@
 #main{
   width: 45%;
   float: left;
+  height: 90%;
+  /*position: fixed;*/
+  overflow-y: scroll;
 }
 
 #profile{
   width: 45%;
   float: right;
+  height: 90%;
+  position: relative;
+  overflow-y: scroll;
+}
+
+#coupons{
+  height: 90%;
+  overflow-y: scroll;
+}
+
+.couponDiv{
+  background-color: beige;
+  border-radius: 20%;
+  padding: .1em, .25em;
+}
+.profileDiv{
+  background-color: beige;
+  border-radius: 20%;
+  text-align: center;
+  padding: .1em, .25em;
 }

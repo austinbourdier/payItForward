@@ -6,7 +6,7 @@ app.controller('mainCtrl', function($scope, $http) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(success, failure)
   } else {
-    alert('error')
+    alert('error finding location')
   }
   function success(position){
     $http({
@@ -14,18 +14,18 @@ app.controller('mainCtrl', function($scope, $http) {
       type: 'GET',
       dataType: 'json'
     }).success(function(data) {
-      data.forEach(function(location){$scope.locations.push(location)})
+      console.log(data)
+      data.forEach(function(location){$scope.locations.push({address: location.address, name: location.name, distance: (location.$distance/1000).toFixed(2)})})
     })
   }
-  function failure(){console.log('failed')}
+  function failure(){alert('error finding location')}
 });
 
 app.controller('profileCtrl', function($scope, $http){
   $scope.currentProfile = [];
-  $scope.coupons = [];
-  $(document).on('click', '.profile .name', function(){
+  $(document).on('click', '.profileDiv', function(){
     $http({
-      url: '/profile/' + (this).innerHTML,
+      url: '/profile/' + $(this).children()[0].innerText,
       type: 'GET',
       dataType: 'json'
     }).success(function(data) {
@@ -37,13 +37,13 @@ app.controller('profileCtrl', function($scope, $http){
         website: data.location.website,
         currentCoupon: data.location.currentCoupon
       }
+      $scope.coupons = [];
       data.coupons.forEach(function(coupon){$scope.coupons.push(coupon)});
-      console.log(data)
     })
   })
   $(document).on('click', '.coupon', function(){
     $http({
-      url: $('#currentLocation').text() + '/coupon/' + (this).innerHTML.substring(0, (this).innerHTML.indexOf(' ')),
+      url: $('#currentLocation').text() + '/coupon/' + (this).innerText.substring(6, (this).innerText.indexOf(' ')),
       type: 'GET',
       dataType: 'json'
     }).success(function(data){

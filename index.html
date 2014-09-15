@@ -9,9 +9,10 @@
 </head>
 <body>
   <div id = 'main' ng-controller='mainCtrl'>
-    <ol>
-      <li class = 'profile' ng-repeat='location in locations track by $index'><span class = 'name'>{{location.name}}</span><span ng-if='location.website'> – <a ng-href = '{{location.website}}'>Restaurant Website</a></span></li>
-    </ol>
+    <div class = 'profileDiv' ng-repeat='location in locations track by $index'>
+      <p class = 'name'>{{location.name}}</p>
+      <p>{{location.address}} | {{location.distance}} kilometers from you</p>
+    </div>
   </div>
   <div id = 'profile' ng-controller='profileCtrl'>
     <div ng-if='currentProfile'>
@@ -19,13 +20,13 @@
       <p>{{currentProfile.address}}</p>
       <p>{{currentProfile.hours}}</p>
       <p>{{currentProfile.phone}}</p>
-      <p>{{currentProfile.website}}</p>
+      <p><a ng-href = '{{currentProfile.website}}'>{{currentProfile.website}}</a></p>
       <p>{{currentProfile.currentCoupon[0]}}</p>
     </div>
-    <div ng-if='currentProfile'>
-        <p ng-repeat='coupon in coupons track by $index'>
-          <span class = 'coupon'>{{coupon.id}} {{coupon.description}}</span>
-        </p>
+    <div id = 'coupons' ng-if='currentProfile'>
+      <p class = 'couponDiv' ng-repeat='coupon in coupons track by $index'>
+        <span class = 'coupon'>Item {{coupon.id}} {{coupon.description}}</span>
+      </p>
     </div>
   </div>
 </body>
