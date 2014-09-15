@@ -5,9 +5,9 @@
   "dependencies": {
     "body-parser": "*",
     "express": "*",
-    "node-env-file": "*",
-    "geolib": "*",
+    "mongoose": "*",
     "navigator": "*",
+    "node-env-file": "*",
     "factual-api": "*",
     "underscore-node": "*"
   }

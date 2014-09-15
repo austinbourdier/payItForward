@@ -3,12 +3,14 @@ var app     = express();
 var bodyParser = require('body-parser')
 var server  = require('http').createServer(app);
 var _ = require('underscore-node');
-var geolib = require('geolib');
 var Factual = require('factual-api');
 var factual = new Factual('r87lYmE5RDLMQOOcETtoZqnLYEvurbTBfUIUAt8y', '6HZGifE7NYj85JvcKnAqQQ0UKn7gYgFzn7oroQGH');
-console.log("Node server started on port 5000");
+var mongoose = require('mongoose');
+var db = mongoose.connection;
+var User = require('./models/models').models.user;
+var Coupon = require('./models/models').models.coupon;
+var Location = require('./models/models').models.location;
 app.use('/', express.static(__dirname + '/'));
-
 app.get('/', function(req,res) {
   res.sendfile(__dirname + '/index.html');
   search = req.query || "";
@@ -22,8 +24,46 @@ app.get('/locations/:coords', function(req,res) {
 });
 
 app.get('/profile/:name', function(req,res){
-  console.log(req.params.name)
+  Location.findOne({'name': req.params.name}, 'name address hours_display tel website', function(err, location){
+    if (err) return handleError(err);
+    if(!location) {
+      factual.get('/t/places-us', {limit:1, q: req.params.name, filters:{category_ids:{"$includes_any":[312,347]}}}, function(error, response){
+        var newLocation = new Location({
+          name: req.params.name,
+          address: response.data[0].address,
+          hours: response.data[0].hours_display,
+          phone: response.data[0].tel,
+          website: response.data[0].website,
+          currentCoupon: []
+        })
+        newLocation.save();
+        res.send({location: newLocation, coupons: coupons});
+      })
+    } else {
+      res.send({location: location, coupons: coupons});
+    }
+  });
 })
 
+mongoose.connect("mongodb://localhost:27017/db", function(err, db) {
+  if(!err) {
+    console.log("We are connected");
+  } else {
+    console.log(err)
+  }
+});
 
 server.listen(process.env.PORT || 5000)
+
+db.on('open', function(){
+  var discounts = ['20%', '10%', '50%', '45%', '$10', '$15', 'Half', 'Buy one get one half'];
+  var item = [' any well drink', ' any appetizer', ' any entree', ' any dessert', ' dinner for four', ' any pitcher of beer'];
+  var append = [' while supplies last', ' greater than $25', ' every third friday of the month', ' all summer', ' after 6pm on weekdays', ' for adults 21+'];
+  for(var couponIndex = 0; couponIndex < 50; couponIndex++){
+    var newCoupon = new Coupon({
+      description: discounts[Math.floor(Math.random()*discounts.length)] + item[Math.floor(Math.random()*item.length)] + append[Math.floor(Math.random()*append.length)],
+      user: [],
+      location: []
+    })
+  }
+})

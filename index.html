@@ -13,7 +13,16 @@
       <li class = 'profile' ng-repeat='location in locations track by $index'><span class = 'name'>{{location.name}}</span><span ng-if='location.website'> – <a ng-href = '{{location.website}}'>Restaurant Website</a></span></li>
     </ol>
   </div>
-  <div ng-controller='profileCtrl'></div>
+  <div id = 'profile' ng-controller='profileCtrl'>
+    <span ng-if='currentProfile'>
+    <p>{{currentProfile.name}}</p>
+    <p>{{currentProfile.address}}</p>
+    <p>{{currentProfile.hours}}</p>
+    <p>{{currentProfile.phone}}</p>
+    <p>{{currentProfile.website}}</p>
+    <p>{{currentProfile.currentCoupon[0]}}</p>
+    </span>
+  </div>
 </body>
 </html>
 
