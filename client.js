@@ -15,13 +15,9 @@ app.controller('mainCtrl', function($scope, $http) {
       dataType: 'json'
     }).success(function(data) {
       data.forEach(function(location){$scope.locations.push(location)})
-      console.log($scope.locations)
     })
   }
-
-  function failure(){
-    console.log('failed')
-  }
+  function failure(){console.log('failed')}
 });
 
 app.controller('profileCtrl', function($scope, $http){
@@ -43,6 +39,17 @@ app.controller('profileCtrl', function($scope, $http){
       }
       data.coupons.forEach(function(coupon){$scope.coupons.push(coupon)});
       console.log(data)
+    })
+  })
+  $(document).on('click', '.coupon', function(){
+    $http({
+      url: $('#currentLocation').text() + '/coupon/' + (this).innerHTML.substring(0, (this).innerHTML.indexOf(' ')),
+      type: 'GET',
+      dataType: 'json'
+    }).success(function(data){
+      $scope.coupons = [];
+      console.log(data)
+      data.coupons.forEach(function(coupon){$scope.coupons.push(coupon)});
     })
   })
 })

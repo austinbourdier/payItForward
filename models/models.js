@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
   userName: String,
-  currentCoupon: Array
+  currentCoupon: Number
 })
 var locationSchema = new Schema({
   name: String,
@@ -11,9 +11,10 @@ var locationSchema = new Schema({
   hours: String,
   phone: String,
   website: String,
-  currentCoupon: Array
+  currentCoupon: String
 })
 var couponSchema = new Schema({
+  id: Number,
   description: String,
   user: Array,
   location: Array

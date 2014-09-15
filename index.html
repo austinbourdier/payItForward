@@ -15,7 +15,7 @@
   </div>
   <div id = 'profile' ng-controller='profileCtrl'>
     <div ng-if='currentProfile'>
-      <p>{{currentProfile.name}}</p>
+      <p id='currentLocation'>{{currentProfile.name}}</p>
       <p>{{currentProfile.address}}</p>
       <p>{{currentProfile.hours}}</p>
       <p>{{currentProfile.phone}}</p>
@@ -23,11 +23,9 @@
       <p>{{currentProfile.currentCoupon[0]}}</p>
     </div>
     <div ng-if='currentProfile'>
-      <ol>
-        <li ng-repeat='coupon in coupons track by $index'>
-          {{coupon}}
-        </li>
-      </ol>
+        <p ng-repeat='coupon in coupons track by $index'>
+          <span class = 'coupon'>{{coupon.id}} {{coupon.description}}</span>
+        </p>
     </div>
   </div>
 </body>

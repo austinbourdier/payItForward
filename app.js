@@ -12,14 +12,24 @@ var Coupon = require('./models/models').models.coupon;
 var Location = require('./models/models').models.location;
 app.use('/', express.static(__dirname + '/'));
 
+mongoose.connect("mongodb://localhost:27017/db", function(err, db) {
+  if(!err) {
+    console.log("We are connected");
+  } else {
+    console.log(err)
+  }
+});
 db.on('open', function(){
   Coupon.remove({}, function(){console.log('deleted')});
+  Location.remove({}, function(){console.log('deleted')});
+  User.remove({}, function(){console.log('deleted')});
   var discounts = ['20%', '10%', '50%', '45%', '$10', '$15', 'Half', 'Buy one get one half'];
-  var item = [' any well drink', ' any appetizer', ' any entree', ' any dessert', ' dinner for four', ' any pitcher of beer'];
+  var item = [' any well drink', ' a childrens meal', 'any appetizer', ' any entree', ' any dessert', ' dinner for four', ' any pitcher of beer'];
   var append = [' while supplies last', ' greater than $25', ' every third friday of the month', ' all summer', ' after 6pm on weekdays', ' for adults 21+'];
   for(var couponIndex = 0; couponIndex < 50; couponIndex++){
     var newCoupon = new Coupon({
-      description: discounts[Math.floor(Math.random()*discounts.length)] + item[Math.floor(Math.random()*item.length)] + append[Math.floor(Math.random()*append.length)],
+      id: couponIndex+1,
+      description: discounts[Math.floor(Math.random()*discounts.length)] + ' off' + item[Math.floor(Math.random()*item.length)] + append[Math.floor(Math.random()*append.length)],
       user: [],
       location: []
     })
@@ -33,7 +43,6 @@ app.get('/', function(req,res) {
 });
 
 app.get('/locations/:coords', function(req,res) {
-
   var coordsString = req.params.coords;
   factual.get('/t/places-us', {limit:25, filters:{category_ids:{"$includes_any":[312,347]}}, sort: "$distance", geo:{"$circle":{"$center":[coordsString.substring(0,coordsString.indexOf('&')), coordsString.substring(coordsString.indexOf('&')+1)],"$meters":20000}}}, function (error, response) {
     res.send(response.data);
@@ -66,13 +75,19 @@ app.get('/profile/:name', function(req,res){
   });
 })
 
-mongoose.connect("mongodb://localhost:27017/db", function(err, db) {
-  if(!err) {
-    console.log("We are connected");
-  } else {
-    console.log(err)
-  }
-});
+app.get('/:location/coupon/:id', function(req, res){
+  Coupon.findOneAndUpdate({id:req.params.id}, {location:[req.params.location]}, function(err, coupon){
+    Location.find({name: req.params.location} , function(err, place){
+      Coupon.find({location:{$size:0}, user:{$size:0}}, function(err, coupons){
+         console.log(place)
+         res.send({location: req.params.location, coupons: coupons, receivedCoupon: place.currentCoupon});
+      })
+    })
+    Coupon.findOne({id:req.params.id}, 'description', function(err,coupon){
+      Location.findOneAndUpdate({name:req.params.location}, {currentCoupon: coupon.description}, function(err, location){})
+    })
+  })
+})
 
 server.listen(process.env.PORT || 5000)
 
