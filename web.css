@@ -1,15 +1,15 @@
 #main{
-  width: 45%;
+  width: 50%;
   float: left;
-  height: 90%;
+  height: 65%;
   /*position: fixed;*/
   overflow-y: scroll;
 }
 
 #profile{
-  width: 45%;
+  width: 50%;
   float: right;
-  height: 90%;
+  height: 65%;
   position: relative;
   overflow-y: scroll;
 }
@@ -17,6 +17,12 @@
 #coupons{
   height: 90%;
   overflow-y: scroll;
+}
+
+#myCoupons{
+  top: 75%;
+  width: 100%;
+  position: absolute;
 }
 
 .couponDiv{

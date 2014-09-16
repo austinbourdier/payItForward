@@ -1,27 +1,42 @@
 var app = angular.module('payItForward', []).run(function($rootScope){
-
+  $rootScope.myCoupons = [];
+  $rootScope.currentUserSignedIn = null;
 })
-app.controller('mainCtrl', function($scope, $http) {
-  $scope.locations = [];
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, failure)
-  } else {
-    alert('error finding location')
-  }
-  function success(position){
+.controller('mainCtrl', function($rootScope, $scope, $http) {
+  var userName = prompt('Enter Username');
+  var password = prompt('Enter Password');
+  $http({
+    url: '/login/' + userName + '/' + password,
+    type: 'GET',
+    dataType: 'json'
+  }).success(function(data){
+    if(data.failedLogin){
+      alert('incorrect credentials');
+    } else {
+      $rootScope.currentUserSignedIn = data.userName;
+      Geolocator.locate();
+    }
+  })
+  var Geolocator = Geolocator || {};
+  Geolocator = {
+    locate: function(){
+      if (navigator.geolocation) {navigator.geolocation.getCurrentPosition(this.success, this.failure)} else {alert('error finding location')}
+    },
+  success: function(position){
     $http({
       url: '/locations/' + position.coords.latitude + '&' + position.coords.longitude,
       type: 'GET',
       dataType: 'json'
     }).success(function(data) {
-      console.log(data)
+      $scope.locations = [];
       data.forEach(function(location){$scope.locations.push({address: location.address, name: location.name, distance: (location.$distance/1000).toFixed(2)})})
     })
-  }
-  function failure(){alert('error finding location')}
-});
+  },
+  failure: function(){alert('error finding location')}
+}
 
-app.controller('profileCtrl', function($scope, $http){
+})
+.controller('profileCtrl', function($rootScope, $scope, $http){
   $scope.currentProfile = [];
   $(document).on('click', '.profileDiv', function(){
     $http({
@@ -43,14 +58,16 @@ app.controller('profileCtrl', function($scope, $http){
   })
   $(document).on('click', '.coupon', function(){
     $http({
-      url: $('#currentLocation').text() + '/coupon/' + (this).innerText.substring(6, (this).innerText.indexOf(' ')),
+      url: $('#currentLocation').text() + '/coupon/' + $rootScope.currentUserSignedIn + '/' + (this).innerText.substring(0, (this).innerText.indexOf(' ')),
       type: 'GET',
       dataType: 'json'
     }).success(function(data){
       $scope.coupons = [];
-      console.log(data)
-      if(data.receivedCoupon.length>0){alert('You have received: ' + data.receivedCoupon)}else{alert('You are the first to leave a coupon at this location, thanks!')}
+      $rootScope.myCoupons.push(data.user.coupons);
       data.coupons.forEach(function(coupon){$scope.coupons.push(coupon)});
     })
   })
+})
+.controller('myCouponsCtrl', function($rootScope,$scope, $http){
+  $scope.coupons = $rootScope.myCoupons;
 })
