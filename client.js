@@ -63,7 +63,7 @@ var app = angular.module('payItForward', []).run(function($rootScope){
       dataType: 'json'
     }).success(function(data){
       $scope.coupons = [];
-      $rootScope.myCoupons = [data.user.coupons];
+      $rootScope.myCoupons.push(data.user.coupons[data.user.coupons.length-1]);
       data.coupons.forEach(function(coupon){$scope.coupons.push(coupon)});
     })
   })

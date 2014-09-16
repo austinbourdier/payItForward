@@ -30,11 +30,8 @@
     </div>
   </div>
   <div id = 'myCoupons' ng-controller='myCouponsCtrl' ng-show='currentUserSignedIn'>
-<!--     <span ng-repeat='coupon in coupons track by $index'>
-      <span class = 'coupon'>{{$rootScope.myCoupons}}</span>
-    </span> -->
     <span ng-repeat='coupon in coupons track by $index'>
-    {{coupon}}
+    {{coupon}}<br>
   </span>
   </div>
 </body>
