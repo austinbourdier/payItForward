@@ -10,6 +10,7 @@ var app = angular.module('payItForward', []).run(function($rootScope){
     type: 'GET',
     dataType: 'json'
   }).success(function(data){
+    console.log(data)
     if(data.failedLogin){
       alert('incorrect credentials');
     } else {
