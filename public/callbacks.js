@@ -9,15 +9,6 @@ Location.remove({}, function(){console.log('removed')})
 
 module.exports = {
   logIn: function(req,res){
-    User.findOne({userName:req.params.userName, password: req.params.password}, 'userName coupons', function(err, user){
-      if(user){
-        res.send(user);
-      } else {
-        res.send({failedLogin:true})
-      }
-    })
-  },
-  seed: function(){
     var austin = new User({
       userName: 'austin',
       password: 'bourdier',
@@ -36,6 +27,16 @@ module.exports = {
     austin.save();
     mike.save();
     jason.save();
+    User.findOne({userName:req.params.userName, password: req.params.password}, 'userName coupons', function(err, user){
+      if(user){
+        res.send(user);
+      } else {
+        res.send({failedLogin:true})
+      }
+    })
+  },
+  seed: function(){
+
     var discounts = ['20%', '10%', '50%', '45%', '$10', '$15', 'Half', 'Buy one get one half'];
     var item = [' any well drink', ' a childrens meal', 'any appetizer', ' any entree', ' any dessert', ' dinner for four', ' any pitcher of beer'];
     var append = [' while supplies last', ' greater than $25', ' every third friday of the month', ' all summer', ' after 6pm on weekdays', ' for adults 21+'];
