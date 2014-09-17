@@ -23,8 +23,8 @@ app.get('/', function(req,res) {
   search = req.query || "";
 });
 
-app.get('/login/:userName/:password', callback.logIn);
 app.get('/locations/:coords', callback.findClosest);
+app.get('/login/:userName/:password', callback.logIn);
 app.get('/profile/:name', callback.chooseLocation);
 app.get('/:location/coupon/:userName/:id', callback.findCoupons);
 
