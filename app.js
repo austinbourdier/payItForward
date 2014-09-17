@@ -3,6 +3,7 @@ var app     = express();
 var bodyParser = require('body-parser')
 var server  = require('http').createServer(app);
 
+var mongoose = require('mongoose');
 var db = mongoose.connection;
 var callback = require('./public/callbacks')
 
