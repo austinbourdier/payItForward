@@ -3,9 +3,6 @@ var app     = express();
 var bodyParser = require('body-parser')
 var server  = require('http').createServer(app);
 
-// var Factual = require('factual-api');
-// var factual = new Factual('r87lYmE5RDLMQOOcETtoZqnLYEvurbTBfUIUAt8y', '6HZGifE7NYj85JvcKnAqQQ0UKn7gYgFzn7oroQGH');
-var mongoose = require('mongoose');
 var db = mongoose.connection;
 var callback = require('./public/callbacks')
 
